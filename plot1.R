@@ -1,0 +1,12 @@
+#setAs("factor","myDate", function(from) as.Date(from, format="%d/%m/%Y") )
+first<-read.table("household_power_consumption.txt",header=TRUE,sep=";",nrows=1,quote="",na.strings="?")
+cNames<-colnames(first)
+t1<-paste(first$Date," ",first$Time)
+t2<- strptime(t1,format="%d/%m/%Y %H:%M:%S")
+start<-strptime("01/02/2007 0:1:0",format="%d/%m/%Y %H:%M:%S")
+dif<-difftime(start,t2,units="mins")
+dat<-read.table("household_power_consumption.txt",col.names=cNames,sep=";",nrows=2880,quote="",na.strings="?", skip=dif)
+with(dat,hist(Global_active_power,main="Global Active Power",xlab="Global Active Power (kilowatts)",col="red",cex.lab=0.8,cex.axis=0.75))
+
+dev.copy(png,file="plot1.png")
+dev.off()
